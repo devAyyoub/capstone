@@ -1,0 +1,64 @@
+version: '3.9'
+
+services:
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    container_name: api-gateway
+    ports:
+      - "8085:8085"
+    networks:
+      - capstone-net
+    depends_on:
+      - account-service
+      - client-service
+      - keycloak
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - KEYCLOAK_URL=http://keycloak:8080
+      - ACCOUNT_SERVICE_URL=http://account-service:8082
+      - CLIENT_SERVICE_URL=http://client-service:8081
+
+  account-service:
+    build:
+      context: ./account-service
+      dockerfile: Dockerfile
+    container_name: account-service
+    ports:
+      - "8082:8082"
+    networks:
+      - capstone-net
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - KEYCLOAK_URL=http://keycloak:8080
+
+  client-service:
+    build:
+      context: ./client-service
+      dockerfile: Dockerfile
+    container_name: client-service
+    ports:
+      - "8081:8081"
+    networks:
+      - capstone-net
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - KEYCLOAK_URL=http://keycloak:8080
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:24.0
+    container_name: keycloak
+    command: start-dev
+    ports:
+      - "8084:8080"
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+      - KC_HOSTNAME_URL=http://localhost:8084
+    networks:
+      - capstone-net
+
+networks:
+  capstone-net:
+    driver: bridge
