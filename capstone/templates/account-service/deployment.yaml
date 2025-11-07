@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.accountService.name }}
+  name: "{{ .Values.accountService.name }}"
   labels:
-    app: {{ .Values.accountService.name }}
+    app: "{{ .Values.accountService.name }}"
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: {{ .Values.accountService.name }}
+      app: "{{ .Values.accountService.name }}"
   template:
     metadata:
       labels:
-        app: {{ .Values.accountService.name }}
+        app: "{{ .Values.accountService.name }}"
     spec:
       containers:
-        - name: {{ .Values.accountService.name }}
+        - name: "{{ .Values.accountService.name }}"
           image: "060351708029.dkr.ecr.eu-west-1.amazonaws.com/capstone/account-service:latest"
           ports:
             - containerPort: {{ .Values.accountService.port }}
