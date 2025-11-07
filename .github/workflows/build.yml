@@ -11,6 +11,7 @@ env:
   # Step 3 – Common environment variables
   AWS_REGION: ${{ secrets.AWS_REGION }}
   ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
+  IMAGE_TAG: ${{ github.sha }}
 
   ECR_REPOSITORY_API: capstone/api-gateway
   ECR_REPOSITORY_CLIENT: capstone/client-service
@@ -50,24 +51,24 @@ jobs:
         working-directory: ./api-gateway
         run: |
           mvn clean package -DskipTests
-          docker build -t $ECR_REGISTRY/${{ env.ECR_REPOSITORY_API }}:latest .
-          docker push $ECR_REGISTRY/${{ env.ECR_REPOSITORY_API }}:latest
+          docker build -t $ECR_REGISTRY/${{ env.ECR_REPOSITORY_API }}:${IMAGE_TAG} .
+          docker push $ECR_REGISTRY/${{ env.ECR_REPOSITORY_API }}:${IMAGE_TAG}
 
       # Step 5 – Build & push Client Service
       - name: Build and Push Client Service
         working-directory: ./client-service
         run: |
           mvn clean package -DskipTests
-          docker build -t $ECR_REGISTRY/${{ env.ECR_REPOSITORY_CLIENT }}:latest .
-          docker push $ECR_REGISTRY/${{ env.ECR_REPOSITORY_CLIENT }}:latest
+          docker build -t $ECR_REGISTRY/${{ env.ECR_REPOSITORY_CLIENT }}:${IMAGE_TAG} .
+          docker push $ECR_REGISTRY/${{ env.ECR_REPOSITORY_CLIENT }}:${IMAGE_TAG}
 
       # Step 5 – Build & push Account Service
       - name: Build and Push Account Service
         working-directory: ./account-service
         run: |
           mvn clean package -DskipTests
-          docker build -t $ECR_REGISTRY/${{ env.ECR_REPOSITORY_ACCOUNT }}:latest .
-          docker push $ECR_REGISTRY/${{ env.ECR_REPOSITORY_ACCOUNT }}:latest
+          docker build -t $ECR_REGISTRY/${{ env.ECR_REPOSITORY_ACCOUNT }}:${IMAGE_TAG} .
+          docker push $ECR_REGISTRY/${{ env.ECR_REPOSITORY_ACCOUNT }}:${IMAGE_TAG}
   deploy:
     name: Deploy All Services to EKS
     runs-on: ubuntu-latest
@@ -102,7 +103,7 @@ jobs:
             helm upgrade --install capstone ./capstone \
               --namespace default \
               --set image.registry=$ECR_REGISTRY \
-              --set image.tag=latest \
+              --set image.tag=${IMAGE_TAG} \
               --set apiGateway.serviceType=LoadBalancer \
               --set apiGateway.keycloakIssuer="https://capstone-keycloak.duckdns.org/realms/training-realm" \
               --set clientService.name=client-service \

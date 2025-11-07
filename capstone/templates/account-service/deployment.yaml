@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: account-deployment
+  name: {{ .Values.accountService.name }}
   labels:
-    app: account-deployment
+    app: {{ .Values.accountService.name }}
 spec:
   replicas: 1
   selector:
@@ -12,11 +12,11 @@ spec:
   template:
     metadata:
       labels:
-        app: account-deployment
+        app: {{ .Values.accountService.name }}
     spec:
       containers:
         - name: {{ .Values.accountService.name }}
-          image: {{ .Values.accountService.image }}
+          image: "{{ .Values.image.registry }}/capstone/{{ .Values.accountService.name }}:{{ .Values.image.tag }}"
           ports:
             - containerPort: {{ .Values.accountService.port }}
       imagePullSecrets:

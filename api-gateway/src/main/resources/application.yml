@@ -1,18 +1,18 @@
 server:
-  port: 8085
+  port: ${SERVER_PORT:8085}
 spring:
   cloud:
     gateway:
       routes:
         - id: client-service
-          uri: http://client-service:8081
+          uri: ${SPRING_CLOUD_GATEWAY_ROUTES_0_URI:http://client-service:8081}
           predicates:
             - Path=/api/clients/**
           filters:
             - StripPrefix=1
 #            - RequestRateLimiter=10, 10, #{@ipKeyResolver}
         - id: account-service
-          uri: http://account-service:8082
+          uri: ${SPRING_CLOUD_GATEWAY_ROUTES_1_URI:http://account-service:8082}
           predicates:
             - Path=/api/accounts/**
           filters:
@@ -27,5 +27,4 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://keycloak:8080/realms/realm-training
-          jwk-set-uri: http://keycloak:8080/realms/realm-training/protocol/openid-connect/certs
+          issuer-uri: ${SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI:https://capstone-keycloak.duckdns.org/realms/training-realm}
