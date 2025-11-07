@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: {{ .Values.accountService.name }}
-          image: "{{ .Values.image.registry }}/capstone/{{ .Values.accountService.name }}:{{ .Values.image.tag }}"
+          image: "060351708029.dkr.ecr.eu-west-1.amazonaws.com/capstone/account-service:latest"
           ports:
             - containerPort: {{ .Values.accountService.port }}
       imagePullSecrets:

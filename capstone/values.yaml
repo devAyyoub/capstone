@@ -12,7 +12,11 @@ apiGateway:
 clientService:
   name: client-service
   port: 8081
+  uri: http://client-service:8081
+  image: 060351708029.dkr.ecr.eu-west-1.amazonaws.com/capstone/client-service:latest
 
 accountService:
   name: account-service
   port: 8082
+  uri: http://account-service:8082
+  image: 060351708029.dkr.ecr.eu-west-1.amazonaws.com/capstone/account-service:latest

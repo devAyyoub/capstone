@@ -6,12 +6,12 @@ data:
   SERVER_PORT: {{ .Values.apiGateway.targetPort }}
 
   SPRING_CLOUD_GATEWAY_ROUTES_0_ID: {{ .Values.clientService.name }}
-  SPRING_CLOUD_GATEWAY_ROUTES_0_URI: "http://{{ .Values.clientService.name }}:{{ .Values.clientService.port }}"
+  SPRING_CLOUD_GATEWAY_ROUTES_0_URI: {{ .Values.clientService.uri }}
   SPRING_CLOUD_GATEWAY_ROUTES_0_PREDICATES_0: "Path=/api/clients/**"
   SPRING_CLOUD_GATEWAY_ROUTES_0_FILTERS_0: "StripPrefix=1"
 
   SPRING_CLOUD_GATEWAY_ROUTES_1_ID: {{ .Values.accountService.name }}
-  SPRING_CLOUD_GATEWAY_ROUTES_1_URI: "http://{{ .Values.accountService.name }}:{{ .Values.accountService.port }}"
+  SPRING_CLOUD_GATEWAY_ROUTES_1_URI: {{ .Values.accountService.uri }}
   SPRING_CLOUD_GATEWAY_ROUTES_1_PREDICATES_0: "Path=/api/accounts/**"
   SPRING_CLOUD_GATEWAY_ROUTES_1_FILTERS_0: "StripPrefix=1"
 
