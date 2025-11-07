@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.apiGateway.name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.apiGateway.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.apiGateway.name }}
+    spec:
+      containers:
+        - name: api-gateway
+          image: "{{ .Values.image.registry }}/capstone/api-gateway:{{ .Values.image.tag }}"
+          ports:
+            - containerPort: {{ .Values.apiGateway.port }}
+          env:
+            - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI
+              value: "{{ .Values.apiGateway.keycloakIssuer }}"
+            - name: SPRING_CLOUD_GATEWAY_ROUTES_0_URI
+              value: "http://client-service:{{ .Values.clientService.port }}"
+            - name: SPRING_CLOUD_GATEWAY_ROUTES_1_URI
+              value: "http://account-service:{{ .Values.accountService.port }}"

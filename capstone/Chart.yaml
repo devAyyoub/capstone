@@ -1,0 +1,5 @@
+apiVersion: v2
+name: capstone
+description: Helm chart for the Capstone microservices (API Gateway, Client, Account)
+version: 1.0.0
+appVersion: "1.0.0"

@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: account-deployment
+  labels:
+    app: account-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.accountService.name }}
+  template:
+    metadata:
+      labels:
+        app: account-deployment
+    spec:
+      containers:
+        - name: {{ .Values.accountService.name }}
+          image: {{ .Values.accountService.image }}
+          ports:
+            - containerPort: {{ .Values.accountService.port }}
+      imagePullSecrets:
+        - name: ecr-secret
