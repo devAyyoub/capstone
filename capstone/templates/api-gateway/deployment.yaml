@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: api-gateway
-          image: "060351708029.dkr.ecr.eu-west-1.amazonaws.com/capstone/api-gateway"
+          image: "{{ .Values.image.registry }}/capstone/api-gateway:{{ .Values.image.tag }}"
           ports:
             - containerPort: {{ .Values.apiGateway.targetPort }}
           envFrom:
