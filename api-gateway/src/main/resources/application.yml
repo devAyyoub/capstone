@@ -10,7 +10,7 @@ spring:
             - Path=/api/clients/**
           filters:
             - StripPrefix=1
-            - RequestRateLimiter=10, 10, #{@ipKeyResolver}
+#            - RequestRateLimiter=10, 10, #{@ipKeyResolver}
         - id: account-service
           uri: http://account-service:8082
           predicates:
@@ -23,3 +23,9 @@ spring:
             allowedOrigins: "*"
             allowedMethods: "*"
             allowedHeaders: "*"
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://keycloak:8080/realms/realm-training
+          jwk-set-uri: http://keycloak:8080/realms/realm-training/protocol/openid-connect/certs
