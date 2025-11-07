@@ -15,8 +15,7 @@ spec:
         app: "{{ .Values.clientService.name }}"
     spec:
       containers:
-        - name: account-service
-          name: "{{ .Values.clientService.name }}"
+        - name: "{{ .Values.clientService.name }}"
           image: "{{ .Values.clientService.image }}"
           imagePullPolicy: Always
           ports:
