@@ -55,7 +55,7 @@ services:
       - KEYCLOAK_ADMIN_PASSWORD=admin
       - KC_HOSTNAME_STRICT=false
       - KC_HOSTNAME_STRICT_HTTPS=false
-      - KC_HOSTNAME_URL=http://localhost:8084
+      - KC_HOSTNAME=localhost
     networks:
       - capstone-net
 
