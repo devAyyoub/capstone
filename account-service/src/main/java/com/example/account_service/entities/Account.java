@@ -11,6 +11,18 @@ public class Account {
         this.balance = balance;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setClientId(Long clientId) {
+        this.clientId = clientId;
+    }
+
+    public void setBalance(Double balance) {
+        this.balance = balance;
+    }
+
     // Getters
     public Long getId() {
         return id;
